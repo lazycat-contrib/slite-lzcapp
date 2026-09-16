@@ -1,0 +1,18 @@
+package: community.lazycat.app.slite
+version: 0.3.0
+name: Slite
+description: Self-hosted link shortener with analytics
+min_os_version: 1.6.0
+homepage: https://github.com/miantiao-me/Slite
+author: miantiao-me
+license: AGPL-3.0-only
+permissions:
+  required:
+    - net.internet
+locales:
+  zh:
+    name: Slite
+    description: 自托管短链接服务，带实时访问统计、二维码、AI 辅助与导入导出
+  en:
+    name: Slite
+    description: Self-hosted link shortener with analytics

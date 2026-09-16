@@ -1,0 +1,70 @@
+version: 1
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/application.lpk
+  target_arch: amd64
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: image
+    image: slite
+
+build:
+  toolchains: []
+  run_buildscript: false
+
+images:
+  - id: slite
+    target: service
+    service: slite
+    source: ghcr.io/miantiao-me/slite
+    channel: stable
+    sort: semver
+    tag_regex: '^v\d+\.\d+\.\d+$'
+    delivery:
+      mode: lazycat
+
+stores:
+  official:
+    enabled: true
+    create_if_missing: true
+    skip_if_version_exists: true
+    continue_if_newer_version: true
+    changelog_locales: [zh, en]
+    application:
+      language: zh
+      name: Slite
+      brief: 自托管短链接服务，带实时访问统计、二维码、AI 辅助与导入导出。
+      description: |
+        Slite 是一个面向个人和小团队的自托管短链接服务（Nuxt 4 + SQLite + DuckDB），单容器即可运行。
+
+        主要功能：
+        - 短链接与自定义 slug、UTM 参数、有效期、访问密码与不安全链接警示页
+        - 实时访问统计：3D 地球、事件日志、多链接筛选分析
+        - 二维码生成、社交预览（标题/描述/图片）
+        - 按设备或地域智能跳转
+        - AI 辅助生成 slug 与 OpenGraph 信息（可选，OpenAI 兼容接口）
+        - 链接 JSON 导入导出、统计 CSV 导出
+        - 多语言界面（中/英等）
+
+        上游项目：https://github.com/miantiao-me/Slite
+      keywords: 短链接, short link, url shortener, analytics, self-hosted
+      source: https://github.com/miantiao-me/Slite
+      source_author: miantiao-me
+      support_pc: true
+      support_mobile: false
+      screenshot_pc_files:
+        - .github/screenshots/pc-1.png
+        - .github/screenshots/pc-2.png
+        - .github/screenshots/pc-3.png
+        - .github/screenshots/pc-4.png
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: Slite
+    summary: 自托管短链接服务，带实时访问统计、二维码与 AI 辅助

@@ -1,0 +1,56 @@
+params:
+  - id: site_token
+    type: secret
+    name: "Site Token"
+    description: "Dashboard and API token (min 8 characters, no whitespace). Auto-filled on the login page."
+    default_value: "$random(len=20)"
+    optional: false
+
+  - id: ai_base_url
+    type: string
+    name: "AI Base URL"
+    description: "Optional OpenAI-compatible API base URL. AI assistance stays disabled until this and the model are set."
+    default_value: ""
+    optional: true
+
+  - id: ai_model
+    type: string
+    name: "AI Model"
+    description: "Optional model identifier, for example gpt-4o-mini. AI stays disabled until base URL and model are set."
+    default_value: ""
+    optional: true
+
+  - id: ai_api_key
+    type: secret
+    name: "AI API Key"
+    description: "Optional AI provider key. May stay empty for local providers that do not require one."
+    default_value: ""
+    optional: true
+
+locales:
+  zh:
+    site_token:
+      name: "站点令牌"
+      description: "控制台与 API 访问令牌（至少 8 位、不含空格），登录页会自动填充"
+    ai_base_url:
+      name: "AI 接口地址"
+      description: "可选，OpenAI 兼容接口地址；与模型一起设置后启用 AI 助手"
+    ai_model:
+      name: "AI 模型"
+      description: "可选，模型标识（如 gpt-4o-mini）；地址与模型都设置后 AI 才启用"
+    ai_api_key:
+      name: "AI API Key"
+      description: "可选，AI 服务商密钥；本地服务可留空"
+  en:
+    site_token:
+      name: "Site Token"
+      description: "Dashboard and API token (min 8 characters, no whitespace). Auto-filled on the login page."
+    ai_base_url:
+      name: "AI Base URL"
+      description: "Optional OpenAI-compatible API base URL. AI assistance stays disabled until this and the model are set."
+    ai_model:
+      name: "AI Model"
+      description: "Optional model identifier, for example gpt-4o-mini. AI stays disabled until base URL and model are set."
+    ai_api_key:
+      name: "AI API Key"
+      description: "Optional AI provider key. May stay empty for local providers that do not require one."

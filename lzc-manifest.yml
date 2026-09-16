@@ -1,0 +1,48 @@
+application:
+  subdomain: slite
+  multi_instance: false
+  public_path:
+    - /
+  upstreams:
+    - location: /
+      backend: http://slite:5483/
+  injects:
+    # 商店强制要求：应用含导入/导出与图片上传，接入懒猫网盘文件选择器拦截
+    - id: open-save-chooser
+      on: browser
+      when:
+        - /*
+      do:
+        - src: file:///lzcapp/pkg/content/lazycat-injects/lzc-file-chooser-inject.js
+    # 免密登录：部署参数中的站点令牌自动填充到 /dashboard/login
+    - id: login-autofill
+      when:
+        - /dashboard/login
+      do:
+        - src: builtin://simple-inject-password
+          params:
+            user: root
+            password: "{{ .U.site_token }}"
+
+services:
+  slite:
+    # upstream: ghcr.io/miantiao-me/slite:v0.3.0
+    image: ghcr.io/miantiao-me/slite:v0.3.0
+    # 镜像为 distroless，以非 root UID 5483 运行；run_as 映射 /lzcapp 持久目录属主
+    run_as: 5483
+    environment:
+      - NUXT_SITE_TOKEN={{ .U.site_token }}
+      - NUXT_DATA_DIR=/data
+      # 懒猫网关是唯一入口并改写转发头，信任代理以获得正确的访客 IP 统计
+      - NUXT_TRUST_PROXY=true
+      - NUXT_AI_BASE_URL={{ .U.ai_base_url }}
+      - NUXT_AI_MODEL={{ .U.ai_model }}
+      - NUXT_AI_API_KEY={{ .U.ai_api_key }}
+    binds:
+      - /lzcapp/var/data:/data
+
+usage: |
+  安装后从启动器打开 Slite，控制台登录页会自动填充部署时生成的站点令牌（也可在「应用详情-设置」中查看 site_token 参数）。
+  短链跳转对所有人开放，控制台与 API 由站点令牌保护。
+  数据（SQLite 链接库、DuckDB 统计、上传图片、自动备份）持久化在 /lzcapp/var/data。
+  可选：部署时填写 OpenAI 兼容接口地址与模型即可启用 AI 生成 slug 与 OpenGraph 信息。
