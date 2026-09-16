@@ -27,8 +27,8 @@ services:
   slite:
     # upstream: ghcr.io/miantiao-me/slite:v0.3.0
     image: registry.lazycat.cloud/czyt/miantiao-me/slite:43363493473709d7
-    # 镜像为 distroless，以非 root UID 5483 运行；run_as 映射 /lzcapp 持久目录属主
-    run_as: 5483
+    # 镜像为 distroless，以非 root UID 5483 运行
+    user: 5483:5483
     environment:
       - NUXT_SITE_TOKEN={{ .U.site_token }}
       - NUXT_DATA_DIR=/data
